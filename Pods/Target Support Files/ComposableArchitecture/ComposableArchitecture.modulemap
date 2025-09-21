@@ -1,0 +1,6 @@
+framework module ComposableArchitecture {
+  umbrella header "ComposableArchitecture-umbrella.h"
+
+  export *
+  module * { export * }
+}

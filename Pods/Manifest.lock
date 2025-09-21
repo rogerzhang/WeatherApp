@@ -1,0 +1,43 @@
+PODS:
+  - Alamofire (5.10.2)
+  - CasePaths (0.1.3)
+  - ComposableArchitecture (0.8.0):
+    - CasePaths
+    - Overture
+    - RxRelay
+    - RxSwift (~> 5.1.1)
+  - Moya (15.0.0):
+    - Moya/Core (= 15.0.0)
+  - Moya/Core (15.0.0):
+    - Alamofire (~> 5.0)
+  - Overture (0.5.0)
+  - RxRelay (5.1.3):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.3)
+
+DEPENDENCIES:
+  - ComposableArchitecture (~> 0.8.0)
+  - Moya (~> 15.0.0)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - CasePaths
+    - ComposableArchitecture
+    - Moya
+    - Overture
+    - RxRelay
+    - RxSwift
+
+SPEC CHECKSUMS:
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
+  CasePaths: 0a2cdef26b2a3e4fabdaca08af5569d6fb1850d6
+  ComposableArchitecture: 8b26f86a9ae64d62b00b3a83b0686b7d54444ac4
+  Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
+  Overture: 2e6252ead5da6d3347f758047f27a31cb469d59d
+  RxRelay: 5a18c2eb2d68326ebaf0112f80d837ae41b92b97
+  RxSwift: 915abbdfb62214aa89ccd0b194d44fb478019b27
+
+PODFILE CHECKSUM: de9e8a041cb834cd70be5b194d91aed4c1e104dc
+
+COCOAPODS: 1.16.2
