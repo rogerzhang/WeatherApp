@@ -36,6 +36,12 @@ Weather/
 - **Network Status**: Real-time network connectivity monitoring and user feedback
 - **Responsive Design**: Adapts to different screen sizes with scrollable content
 
+  ## Screen Recording
+
+https://github.com/user-attachments/assets/cbb63726-f338-47cc-8a37-48b46b575173
+
+
+
 ## ⏰ Weather Refresh Mechanism
 
 ### Current Implementation:
