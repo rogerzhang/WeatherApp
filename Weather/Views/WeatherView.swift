@@ -18,13 +18,22 @@ struct WeatherView: View {
             
             ScrollView {
                 VStack(spacing: 24) {
+                    // Network Status Indicator
+                    if !viewModel.isNetworkAvailable {
+                        NetworkStatusCard()
+                    }
+                    
                     // Weather Card
                     if let weather = viewModel.weather {
                         WeatherCard(weather: weather)
                     } else if viewModel.isLoading {
                         LoadingCard()
                     } else if let errorMessage = viewModel.errorMessage {
-                        ErrorCard(errorMessage: errorMessage)
+                        ErrorCard(
+                            errorMessage: errorMessage,
+                            isNetworkAvailable: viewModel.isNetworkAvailable,
+                            onRetry: viewModel.retryFetch
+                        )
                     }
                     
                     // City Selector Card
@@ -35,11 +44,21 @@ struct WeatherView: View {
             }
         }
         .onAppear {
-            viewModel.startTimer()
             viewModel.fetchWeather()
+            viewModel.startTimer()
         }
         .onChange(of: viewModel.selectedCity) {
             viewModel.fetchWeather()
+        }
+        .onChange(of: viewModel.isNetworkAvailable) { isAvailable in
+            if isAvailable {
+                viewModel.startTimer()
+                if viewModel.weather == nil {
+                    viewModel.fetchWeather()
+                }
+            } else {
+                viewModel.stopTimer()
+            }
         }
     }
 }
@@ -118,14 +137,16 @@ struct LoadingCard: View {
 // MARK: - Error Card
 struct ErrorCard: View {
     let errorMessage: String
+    let isNetworkAvailable: Bool
+    let onRetry: () -> Void
     
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: "exclamationmark.triangle.fill")
+            Image(systemName: isNetworkAvailable ? "exclamationmark.triangle.fill" : "wifi.slash")
                 .font(.system(size: 50))
-                .foregroundColor(.red)
+                .foregroundColor(isNetworkAvailable ? .red : .orange)
             
-            Text("Unable to load weather")
+            Text(isNetworkAvailable ? "Unable to load weather" : "No Internet Connection")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundColor(.primary)
@@ -135,6 +156,14 @@ struct ErrorCard: View {
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
+            
+            if isNetworkAvailable {
+                Button("Retry") {
+                    onRetry()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.blue)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(30)
@@ -142,6 +171,39 @@ struct ErrorCard: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.systemBackground))
                 .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+        )
+    }
+}
+
+// MARK: - Network Status Card
+struct NetworkStatusCard: View {
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "wifi.slash")
+                .font(.title2)
+                .foregroundColor(.orange)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("No Internet Connection")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Text("Weather data will load automatically when connection is restored")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.orange.opacity(0.1))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.orange.opacity(0.3), lineWidth: 1)
+                )
         )
     }
 }
@@ -186,3 +248,4 @@ private let dateFormatter: DateFormatter = {
     formatter.dateFormat = "HH:mm"
     return formatter
 }()
+
