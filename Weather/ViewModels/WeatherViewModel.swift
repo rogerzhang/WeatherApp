@@ -57,7 +57,7 @@ class WeatherViewModel: ObservableObject {
                     self?.errorMessage = error.localizedDescription
                     
                     // If it's a network error, we'll retry when network becomes available
-                    if case .networkError = error as? WeatherError {
+                    if case .networkError = error {
                         // Network error - will retry automatically when network is restored
                     }
                 }

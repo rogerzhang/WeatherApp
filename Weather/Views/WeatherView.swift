@@ -50,7 +50,7 @@ struct WeatherView: View {
         .onChange(of: viewModel.selectedCity) {
             viewModel.fetchWeather()
         }
-        .onChange(of: viewModel.isNetworkAvailable) { isAvailable in
+        .onChange(of: viewModel.isNetworkAvailable) { _, isAvailable in
             if isAvailable {
                 viewModel.startTimer()
                 if viewModel.weather == nil {

@@ -91,7 +91,7 @@ Text("Last updated: \(weather.serverTime) (refreshed every minute)")
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/rogerzhang/WeatherApp.git>
    cd Weather
    ```
 

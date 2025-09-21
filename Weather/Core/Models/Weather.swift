@@ -39,6 +39,15 @@ struct Weather: Equatable {
 //        self.lastUpdated = Date(timeIntervalSince1970: response.dt) // Server timestamp is not refreshed every minute
         self.lastUpdated = Date() // Use current local time instead of API timestamp
     }
+    
+    // MARK: - Testing Initializer
+    #if DEBUG
+    init(city: String, temperature: Double, lastUpdated: Date) {
+        self.city = city
+        self.temperature = temperature
+        self.lastUpdated = lastUpdated
+    }
+    #endif
 }
 
 enum City: String, CaseIterable {
