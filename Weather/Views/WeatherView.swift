@@ -5,15 +5,6 @@ struct WeatherView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            // City Selector
-            Picker("City", selection: $viewModel.selectedCity) {
-                ForEach(City.allCases, id: \.self) { city in
-                    Text(city.rawValue).tag(city)
-                }
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
             // Weather Content
             if let weather = viewModel.weather {
                 VStack(spacing: 16) {
@@ -49,6 +40,15 @@ struct WeatherView: View {
                 }
             }
             
+            // City Selector
+            Picker("City", selection: $viewModel.selectedCity) {
+                ForEach(City.allCases, id: \.self) { city in
+                    Text(city.rawValue).tag(city)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
             Spacer()
         }
         .padding()
@@ -56,7 +56,7 @@ struct WeatherView: View {
             viewModel.startTimer()
             viewModel.fetchWeather()
         }
-        .onChange(of: viewModel.selectedCity) { _ in
+        .onChange(of: viewModel.selectedCity) {
             viewModel.fetchWeather()
         }
     }
