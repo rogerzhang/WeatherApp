@@ -9,7 +9,7 @@ class WeatherViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isNetworkAvailable = false
     
-    private let weatherService = WeatherService()
+    private let weatherService:WeatherServiceProtocol = WeatherService()
     private var timer: Timer?
     private let networkMonitor = NWPathMonitor()
     private let networkQueue = DispatchQueue(label: "NetworkMonitor")

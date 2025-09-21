@@ -29,21 +29,31 @@ Weather/
 - **Real-time Weather Data**: Fetches current weather conditions from OpenWeatherMap API
 - **Multi-city Support**: Switch between London and Helsinki
 - **Auto-refresh**: Automatically updates weather data every minute
-- **Error Handling**: Displays user-friendly error messages
+- **Smart Network Handling**: Automatically detects network availability and retries when connection is restored
+- **Card-based UI**: Modern, friendly interface with rounded cards and subtle shadows
+- **Error Handling**: Displays user-friendly error messages with retry options
 - **Loading States**: Shows loading indicators during data fetching
-- **Clean UI**: Modern SwiftUI interface with temperature display and city selection
+- **Network Status**: Real-time network connectivity monitoring and user feedback
+- **Responsive Design**: Adapts to different screen sizes with scrollable content
 
 ## ⏰ Weather Refresh Mechanism
 
 ### Current Implementation:
-- **Client-side Timer**: App triggers weather API requests every 60 seconds
+- **Smart Timer**: App triggers weather API requests every 60 seconds (only when network is available)
+- **Network-Aware**: Automatically pauses/resumes based on network connectivity
 - **Local Time Display**: Shows the time when the app last fetched data (not server update time)
 - **API Data**: Uses OpenWeatherMap API which typically updates every 10-15 minutes
 
 ### Refresh Flow:
 ```
-Timer (60s) → fetchWeather() → API Request → Update UI with local timestamp
+Network Monitor → Timer (60s) → fetchWeather() → API Request → Update UI with local timestamp
 ```
+
+### Network Handling:
+- **Real-time Monitoring**: Uses `NWPathMonitor` to detect network status changes
+- **Automatic Retry**: Immediately fetches data when network becomes available
+- **Smart Timer**: Only runs when network is available, pauses when offline
+- **User Feedback**: Shows network status and provides retry options
 
 ### Note on Server Timestamps:
 The app currently uses local time for "Last updated" display instead of server timestamps because:
@@ -64,7 +74,10 @@ Text("Last updated: \(weather.serverTime) (refreshed every minute)")
 ## 🛠️ Dependencies
 
 - **Moya**: Network abstraction layer for API calls
-- **ComposableArchitecture**: State management (currently not fully utilized)
+- **Network**: Real-time network connectivity monitoring
+- **SwiftUI**: Modern declarative UI framework
+- **Foundation**: Core system services and networking
+- **ComposableArchitecture**: State management (available but not fully utilized)
 - **RxSwift/RxRelay**: Reactive programming (available but not used in current implementation)
 
 ## 📱 Compilation & Setup
@@ -120,8 +133,17 @@ Weather.xcworkspace    # Main workspace file (use this, not .xcodeproj)
 
 ### Timer Configuration:
 - **Refresh Interval**: 60 seconds
-- **Auto-start**: Timer starts when view appears
-- **Auto-stop**: Timer stops when view disappears
+- **Network-aware**: Only runs when network is available
+- **Auto-start**: Timer starts when view appears and network is available
+- **Auto-pause**: Timer pauses when network is unavailable
+- **Auto-resume**: Timer resumes when network becomes available
+
+### UI Components:
+- **WeatherCard**: Main weather display with temperature and city
+- **LoadingCard**: Animated loading state with progress indicator
+- **ErrorCard**: Error display with retry functionality
+- **NetworkStatusCard**: Network connectivity status indicator
+- **CitySelectorCard**: City selection interface
 
 ## 🧪 Testing
 
@@ -148,20 +170,38 @@ Select WeatherUITests scheme and run
 - Use `@Published` properties for reactive UI updates
 
 ### Future Improvements:
-- Add more cities
-- Implement weather forecasts
-- Add location-based weather
+- Add more cities and weather conditions
+- Implement weather forecasts and hourly data
+- Add location-based weather using Core Location
 - Implement proper state management with ComposableArchitecture
-- Add unit tests for ViewModels
-- Implement offline caching
+- Add unit tests for ViewModels and network handling
+- Implement offline caching with Core Data
 - Add weather icons and animations
+- Implement push notifications for weather alerts
+- Add weather map integration
+- Implement dark mode support
 
 ## 🐛 Known Issues
 
 - API key is hardcoded (security concern)
-- Limited error handling for network failures
 - No offline data persistence
 - Timer continues running even when app is backgrounded
+- Limited weather data (only temperature and city name)
+
+## ✨ Recent Updates
+
+### v2.0 - Enhanced UI & Network Handling
+- **Card-based Design**: Modern, friendly interface with rounded cards and shadows
+- **Smart Network Handling**: Real-time network monitoring with automatic retry
+- **Enhanced Error Handling**: Different error states for network vs. API issues
+- **Improved UX**: Better loading states and user feedback
+- **Responsive Design**: Scrollable content that adapts to different screen sizes
+
+### v1.0 - Initial Release
+- Basic weather display for London and Helsinki
+- 60-second auto-refresh timer
+- Simple error handling
+- Basic SwiftUI interface
 
 ## 📄 License
 
