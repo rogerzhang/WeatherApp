@@ -36,7 +36,8 @@ struct Weather: Equatable {
     init(from response: WeatherResponse) {
         self.city = response.name
         self.temperature = response.main.temp
-        self.lastUpdated = Date(timeIntervalSince1970: response.dt)
+//        self.lastUpdated = Date(timeIntervalSince1970: response.dt) // Server timestamp is not refreshed every minute
+        self.lastUpdated = Date() // Use current local time instead of API timestamp
     }
 }
 
